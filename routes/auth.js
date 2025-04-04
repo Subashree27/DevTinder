@@ -1,8 +1,9 @@
 const express = require('express');
 const authRouter = express.Router();
-const validateSignupData = require("../utils/validation");
+const { validateSignupData } = require("../utils/validation");
 const User = require('../src/models/user')
 const bcrypt = require("bcrypt")
+const validator = require('validator')
 
 
 authRouter.post('/signup', async (req, res) => {
@@ -11,7 +12,7 @@ authRouter.post('/signup', async (req, res) => {
         
         validateSignupData(req);
         
-        const { firstName, lastName, email, password } = req.body;
+        const { firstName, lastName, email, password, about,age,gender,photoURL,skills} = req.body;
         const existingUser = await User.findOne({ email });
         
         if (existingUser) {
@@ -25,6 +26,11 @@ authRouter.post('/signup', async (req, res) => {
             lastName,
             email,
             password: passwordHash,
+            about,
+            age,
+            gender,
+            photoURL,
+            skills
         });
         
         await user.save();
