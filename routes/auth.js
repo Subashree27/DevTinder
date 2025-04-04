@@ -1,5 +1,9 @@
 const express = require('express');
 const authRouter = express.Router();
+const validateSignupData = require("../utils/validation");
+const User = require('../src/models/user')
+const bcrypt = require("bcrypt")
+
 
 authRouter.post('/signup', async (req, res) => {
     try {
@@ -54,3 +58,13 @@ authRouter.post('/login', async (req, res) => {
         res.status(400).send("Error: " + err.message);
     }
 });
+
+
+// I'm telling to empty the token -->In PostMan the cookies which contains token gets Empty
+authRouter.post('/logout',async(req,res)=>{
+    res.cookie("token",null,{
+        expires:new Date(Date.now()),
+    });
+    res.send("Logged out successfully....");
+})
+module.exports = authRouter;

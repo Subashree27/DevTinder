@@ -1,7 +1,9 @@
 const express = require('express');
-const profileAuth = express.Router();
+const profileRouter = express.Router();
+// const User = require("../src/models/user")
+const {userAuth} = require("../middlewares/auth")
 
-profileAuth.get('/profile',userAuth,async(req,res)=>{
+profileRouter.get('/profile/view',userAuth,async(req,res)=>{
     try{
         const user = req.user
         res.send(user);
@@ -12,4 +14,14 @@ profileAuth.get('/profile',userAuth,async(req,res)=>{
     }
     });
 
-module.exports= profileAuth;
+profileRouter.patch('/profile/edit',userAuth,async(req,res)=>{
+    try{
+        
+    }
+    catch(err){
+
+    }
+})
+
+
+    module.exports= profileRouter;
