@@ -45,7 +45,8 @@ requestRouter.post('/request/send/:status/:userId', userAuth, async (req, res) =
 
         // Save new connection request
         const connectionRequest = new ConnectionRequest({ fromUserId, toUserId, status });
-        const data = await connectionRequest.save();
+        const data = await connectionRequest.save(); // error thrown here
+
 
         return res.status(201).json({
             message: "Connection Request Sent Successfully!",
@@ -54,7 +55,7 @@ requestRouter.post('/request/send/:status/:userId', userAuth, async (req, res) =
 
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Internal server error" });
+        return res.status(500).json({ message: "Cannot send Connection Request to yourself" });
     }
 });
 
