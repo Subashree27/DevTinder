@@ -55,7 +55,7 @@ requestRouter.post('/request/send/:status/:userId', userAuth, async (req, res) =
 
     } catch (err) {
         console.error(err);
-        return res.status(500).json({ message: "Cannot send Connection Request to yourself" });
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 });
 
