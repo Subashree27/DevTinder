@@ -62,8 +62,8 @@ const mongoose = require("mongoose");
 
 requestRouter.post('/request/review/:status/:requestId', userAuth, async (req, res) => {
     try {
-        const loggedInUser = req.user;
-        const { status, requestId } = req.params;
+        const loggedInUser = req.user; // We the user login to see whom have given request
+        const { status, requestId } = req.params; 
 
         if (!["accepted", "rejected"].includes(status)) {
             return res.status(400).json({ message: "Status is not allowed" });
