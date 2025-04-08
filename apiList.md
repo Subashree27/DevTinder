@@ -13,8 +13,9 @@ profile Router
 connectionRequestRouter
 - POST /request/send/interested/:userId     -------\\ Making these two Api in Dynamic:
 - POST /request/send/ignored/:userId        -------// POST /request/send/:status/:userId
-- POST /request/review/accepted/:requestId
-- POST /request/review/rejected/:requestId
+
+- POST /request/review/accepted/:requestId   --------\\ Making these two Api in Dynamic:
+- POST /request/review/rejected/:requestId   --------// POST / request/review/:status/:requestId
 
 userRouter
 - GET /user/connections

@@ -58,6 +58,44 @@ requestRouter.post('/request/send/:status/:userId', userAuth, async (req, res) =
         return res.status(500).json({ message: "Internal Server Error" });
     }
 });
+const mongoose = require("mongoose");
+
+requestRouter.post('/request/review/:status/:requestId', userAuth, async (req, res) => {
+    try {
+        const loggedInUser = req.user;
+        const { status, requestId } = req.params;
+
+        if (!["accepted", "rejected"].includes(status)) {
+            return res.status(400).json({ message: "Status is not allowed" });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(requestId)) {
+            return res.status(400).json({ message: "Invalid requestId" });
+        }
+
+        const connectionRequest = await ConnectionRequest.findOne({
+            _id: requestId,
+            toUserId: loggedInUser._id, // ensure this request was sent to the logged-in user
+            status: "interested"
+        });
+
+        if (!connectionRequest) {
+            return res.status(404).json({ message: "Connection Request not found or already handled" });
+        }
+
+        connectionRequest.status = status;
+        const updatedRequest = await connectionRequest.save();
+
+        return res.status(200).json({
+            message: `Connection Request ${status} successfully.`,
+            data: updatedRequest
+        });
+
+    } catch (err) {
+        console.error("Error updating connection request:", err);
+        return res.status(500).send("ERROR: " + err.message);
+    }
+});
 
 
 module.exports = requestRouter;
