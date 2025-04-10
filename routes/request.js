@@ -78,7 +78,7 @@ requestRouter.post('/request/review/:status/:requestId', userAuth, async (req, r
             toUserId: loggedInUser._id, // ensure this request was sent to the logged-in user
             status: "interested",
         });
-
+        
         if (!connectionRequest) {
             return res.status(404).json({ message: "Connection Request not found" });
         }
