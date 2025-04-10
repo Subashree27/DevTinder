@@ -61,26 +61,26 @@ requestRouter.post('/request/send/:status/:userId', userAuth, async (req, res) =
 const mongoose = require("mongoose");
 
 requestRouter.post('/request/review/:status/:requestId', userAuth, async (req, res) => {
-    try {
+        try{
+    // check the connectionRequest from Mongodb(Vicky => shreenidhi)
+    // is LoggedInUser ==> shreenidhi
+    // here shreenidhi is a receiver when she login she receive the request from Vicky  
         const loggedInUser = req.user; // We the user login to see whom have given request
         const { status, requestId } = req.params; 
-
-        if (!["accepted", "rejected"].includes(status)) {
-            return res.status(400).json({ message: "Status is not allowed" });
-        }
-
-        if (!mongoose.Types.ObjectId.isValid(requestId)) {
-            return res.status(400).json({ message: "Invalid requestId" });
+        const allowedStatus =["accepted","rejected"];
+        
+        if (!allowedStatus.includes(status)) {
+            return res.status(400).json({ message: "Status not allowed" });
         }
 
         const connectionRequest = await ConnectionRequest.findOne({
-            _id: requestId,
+            _id: requestId,  // requestId =>connectionRequest ->pass->_id
             toUserId: loggedInUser._id, // ensure this request was sent to the logged-in user
-            status: "interested"
+            status: "interested",
         });
 
         if (!connectionRequest) {
-            return res.status(404).json({ message: "Connection Request not found or already handled" });
+            return res.status(404).json({ message: "Connection Request not found" });
         }
 
         connectionRequest.status = status;
@@ -90,6 +90,7 @@ requestRouter.post('/request/review/:status/:requestId', userAuth, async (req, r
             message: `Connection Request ${status} successfully.`,
             data: updatedRequest
         });
+       
 
     } catch (err) {
         console.error("Error updating connection request:", err);
