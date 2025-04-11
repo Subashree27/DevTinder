@@ -10,8 +10,7 @@ const {validateSignupData,validateEditProfile} = require("../utils/validation");
 //     const user = req.user;
 //     console.log("Connection Established");
     
-// });
-
+// }); 
 requestRouter.post('/request/send/:status/:userId', userAuth, async (req, res) => {
     try {
         const fromUserId = req.user._id;
@@ -47,11 +46,10 @@ requestRouter.post('/request/send/:status/:userId', userAuth, async (req, res) =
         const connectionRequest = new ConnectionRequest({ fromUserId, toUserId, status });
         const data = await connectionRequest.save(); // error thrown here
 
-
         return res.status(201).json({
             message: "Connection Request Sent Successfully!",
             data,
-        });
+        }); 
 
     } catch (err) {
         console.error(err);
@@ -74,7 +72,7 @@ requestRouter.post('/request/review/:status/:requestId', userAuth, async (req, r
         }
 
         const connectionRequest = await ConnectionRequest.findOne({
-            _id: requestId,  // requestId =>connectionRequest ->pass->_id
+            _id: requestId,  // requestId =>connectionRequest ->pass->_id(Mongodb)
             toUserId: loggedInUser._id, // ensure this request was sent to the logged-in user
             status: "interested",
         });
@@ -88,7 +86,7 @@ requestRouter.post('/request/review/:status/:requestId', userAuth, async (req, r
 
         return res.status(200).json({
             message: `Connection Request ${status} successfully.`,
-            data: updatedRequest
+            data: updatedRequest 
         });
        
 
@@ -100,3 +98,5 @@ requestRouter.post('/request/review/:status/:requestId', userAuth, async (req, r
 
 
 module.exports = requestRouter;
+
+
