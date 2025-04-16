@@ -16,7 +16,6 @@
         throw new Error("Invalid User");
     }
    
-
-
-
-
+# If we give
+   git diff ---> there comes an : if we press q it will be gone
+   
